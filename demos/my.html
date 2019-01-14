@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Blockly Demo: Resizable Blockly (Part 2)</title>
+  <script src="../blockly_compressed.js"></script>
+  	<!-- 块定义 -->
+	<script src="../blocks/logic.js"></script>
+	<script src="../blocks/loops.js"></script>
+	<script src="../blocks/math.js"></script>
+	<script src="../blocks/text.js"></script>
+	<script src="../blocks/lists.js"></script>
+	<script src="../blocks/colour.js"></script>
+	<script src="../blocks/variables.js"></script>
+	<script src="../blocks/variables_dynamic.js"></script>
+	<script src="../blocks/procedures.js"></script>
+	<script src="../blocks/output.js"></script>
+	
+  <!-- 本地化文件 -->
+  <script src="../msg/js/en.js"></script>
+  
+  <!-- 代码转换器定义 -->
+  <script src="../generators/c.js"></script>
+<script src="../generators/c/logic.js"></script>
+<script src="../generators/c/loops.js"></script>
+<script src="../generators/c/math.js"></script>
+<script src="../generators/c/text.js"></script>
+<script src="../generators/c/lists.js"></script>
+<script src="../generators/c/colour.js"></script>
+<script src="../generators/c/variables.js"></script>
+<script src="../generators/c/variables_dynamic.js"></script>
+<script src="../generators/c/procedures.js"></script>
+<script src="../generators/c/output.js"></script>
+<script src="../generators/javascript.js"></script>
+<script src="../generators/javascript/logic.js"></script>
+<script src="../generators/javascript/loops.js"></script>
+<script src="../generators/javascript/math.js"></script>
+<script src="../generators/javascript/text.js"></script>
+<script src="../generators/javascript/lists.js"></script>
+<script src="../generators/javascript/colour.js"></script>
+<script src="../generators/javascript/variables.js"></script>
+<script src="../generators/javascript/variables_dynamic.js"></script>
+<script src="../generators/javascript/procedures.js"></script>
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+    }
+    body {
+      background-color: #fff;
+      font-family: sans-serif;
+      overflow: hidden;
+    }
+    h1 {
+      font-weight: normal;
+      font-size: 140%;
+    }
+    table {
+      height: 100%;
+      width: 100%;
+    }
+    #blocklyArea {
+      height: 99%;
+    }
+  </style>
+</head>
+<body>
+  <table>
+    <tr>
+      <td>
+        <h1><a href="https://developers.google.com/blockly/">Blockly</a> &gt;
+          <a href="./index.html">Demos</a> &gt; Resizable Blockly</h1>
+
+        <p>
+          疯壳幼儿编程DEMO V_1.0
+		  <button onclick="toFile('C')">TO .C FILE</button>
+		  <button onclick="toCode('C')">TO C</button>
+		   <button onclick="toCode('JavaScript')">TO JS</button>
+        </p>
+
+      </td>
+    </tr>
+    <tr>
+      <td id="blocklyArea">
+      </td>
+    </tr>
+  </table>
+
+  <div id="blocklyDiv" style="position: absolute"></div>
+
+<xml xmlns="http://www.w3.org/1999/xhtml" id="toolbox" style="display: none;">
+  <category name="Logic" colour="#5C81A6">
+    <block type="controls_if"></block>
+    <block type="logic_compare">
+      <field name="OP">EQ</field>
+    </block>
+    <block type="logic_operation">
+      <field name="OP">AND</field>
+    </block>
+    <block type="logic_negate"></block>
+    <block type="logic_boolean">
+      <field name="BOOL">TRUE</field>
+    </block>
+    <block type="logic_null"></block>
+    <block type="logic_ternary"></block>
+  </category>
+  <category name="Loops" colour="#5CA65C">
+    <block type="controls_repeat_ext">
+      <value name="TIMES">
+        <shadow type="math_number">
+          <field name="NUM">10</field>
+        </shadow>
+      </value>
+    </block>
+    <block type="controls_whileUntil">
+      <field name="MODE">WHILE</field>
+    </block>
+    <block type="controls_for">
+      <field name="VAR" id="m-8@i@(nG0ak#$yU|7PV" variabletype="">i</field>
+      <value name="FROM">
+        <shadow type="math_number">
+          <field name="NUM">1</field>
+        </shadow>
+      </value>
+      <value name="TO">
+        <shadow type="math_number">
+          <field name="NUM">10</field>
+        </shadow>
+      </value>
+      <value name="BY">
+        <shadow type="math_number">
+          <field name="NUM">1</field>
+        </shadow>
+      </value>
+    </block>
+    <block type="controls_flow_statements" disabled="true">
+      <field name="FLOW">BREAK</field>
+    </block>
+  </category>
+  <category name="Math" colour="#5C68A6">
+    <block type="math_single">
+      <field name="OP">ROOT</field>
+      <value name="NUM">
+        <shadow type="math_number">
+          <field name="NUM">9</field>
+        </shadow>
+      </value>
+    </block>
+    <block type="math_number">
+      <field name="NUM">0</field>
+    </block>
+    <block type="math_arithmetic">
+      <field name="OP">ADD</field>
+      <value name="A">
+        <shadow type="math_number">
+          <field name="NUM">1</field>
+        </shadow>
+      </value>
+      <value name="B">
+        <shadow type="math_number">
+          <field name="NUM">1</field>
+        </shadow>
+      </value>
+    </block>
+    <block type="math_random_int">
+      <value name="FROM">
+        <shadow type="math_number">
+          <field name="NUM">1</field>
+        </shadow>
+      </value>
+      <value name="TO">
+        <shadow type="math_number">
+          <field name="NUM">100</field>
+        </shadow>
+      </value>
+    </block>
+  </category>
+  <category name="Variables" colour="#A65C81" custom="VARIABLE"></category>
+  <category name="Output" colour="#a5935b">
+    <block type="blink_per_ms"></block>
+  </category>
+</xml>
+
+
+  <script>
+  //初始化文件
+    var blocklyArea = document.getElementById('blocklyArea');
+    var blocklyDiv = document.getElementById('blocklyDiv');
+    var demoWorkspace = Blockly.inject(blocklyDiv,
+        { 
+			toolbox : toolbox, 
+			collapse : true, 
+			comments : true, 
+			disable : true, 
+			maxBlocks : Infinity, 
+			trashcan : true, 
+			horizontalLayout : false, 
+			toolboxPosition : 'start', 
+			css : true, 
+			media : '../media/', 
+			rtl : false, 
+			scrollbars : true, 
+			sounds : true, 
+			oneBasedIndex : true,
+			zoom : {
+				controls : true, 
+				wheel : true, 
+				startScale : 1, 
+				maxScale : 3, 
+				minScale : 0.3, 
+				scaleSpeed : 1.2
+			}
+		});
+    var onresize = function(e) {
+      // Compute the absolute coordinates and dimensions of blocklyArea.
+      var element = blocklyArea;
+      var x = 0;
+      var y = 0;
+      do {
+        x += element.offsetLeft;
+        y += element.offsetTop;
+        element = element.offsetParent;
+      } while (element);
+      // Position blocklyDiv over blocklyArea.
+      blocklyDiv.style.left = x + 'px';
+      blocklyDiv.style.top = y + 'px';
+      blocklyDiv.style.width = blocklyArea.offsetWidth + 'px';
+      blocklyDiv.style.height = blocklyArea.offsetHeight + 'px';
+      Blockly.svgResize(demoWorkspace);
+    };
+    window.addEventListener('resize', onresize, false);
+    onresize();
+    Blockly.svgResize(demoWorkspace);
+	
+	
+	//转换函数
+	function toCode(lang) {
+	  alert(Blockly[lang].workspaceToCode(demoWorkspace));
+	}
+	
+	//转换文件
+	function toFile(lang) {
+	var content = Blockly[lang].workspaceToCode(demoWorkspace);
+	var fileName = '';
+	var content = '';
+	  if(lang=='C'){
+		var head = '#include "ext.H"\n#include "sys.H"\nvoid mian(void){\n\t';
+		var tail = '\treturn;\n}'	
+		content = head + Blockly[lang].workspaceToCode(demoWorkspace) + tail;
+		fileName = 'main.c'
+	  }
+	  downloadFile(fileName,content)
+	}
+	
+	//转换文件函数
+	function downloadFile(fileName, content, blobOptions) {
+
+		blobOptions = blobOptions || {};
+
+		var blob = new Blob([content], blobOptions);
+		var a = document.createElement('a');
+		a.innerHTML = fileName;
+
+		// 指定生成的文件名
+		a.download = fileName;
+		a.href = URL.createObjectURL(blob);
+
+		document.body.appendChild(a);
+
+		var evt = document.createEvent("MouseEvents");
+		evt.initEvent("click", false, false);
+
+		a.dispatchEvent(evt);
+
+		document.body.removeChild(a);
+    }
+
+
+  </script>
+</body>
+</html>
